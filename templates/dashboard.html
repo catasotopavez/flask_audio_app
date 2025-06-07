@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h3">Dashboard de Análisis</h1>
+      <a href="/" class="btn btn-secondary">Volver</a>
+    </div>
+
+    <!-- KPIs -->
+    <div class="row text-center mb-5">
+      <div class="col-md-2">
+        <div class="card p-3">
+          <h6>Total audios</h6>
+          <h4>{{ total }}</h4>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card p-3">
+          <h6>Prom. Recomendación</h6>
+          <h4>{{ promedio_recomendacion }}</h4>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card p-3">
+          <h6>Prom. Satisfacción</h6>
+          <h4>{{ promedio_satisfaccion }}</h4>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card p-3">
+          <h6>NPS</h6>
+          <h4>{{ nps }}%</h4>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card p-3">
+          <h6>CSAT</h6>
+          <h4>{{ csat }}%</h4>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <h5>Clasificación de experiencia</h5>
+        <canvas id="clasificacionChart"></canvas>
+      </div>
+      <div class="col-md-6 mb-4">
+        <h5>Problemas mencionados</h5>
+        <canvas id="problemasChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    new Chart(document.getElementById("clasificacionChart"), {
+      type: 'pie',
+      data: {
+        labels: {{ clasificaciones.keys()|list|tojson }},
+        datasets: [{
+          data: {{ clasificaciones.values()|list|tojson }},
+          backgroundColor: ['#198754', '#ffc107', '#dc3545']
+        }]
+      }
+    });
+
+    new Chart(document.getElementById("problemasChart"), {
+      type: 'bar',
+      data: {
+        labels: {{ problemas.keys()|list|tojson }},
+        datasets: [{
+          label: "Cantidad",
+          data: {{ problemas.values()|list|tojson }},
+          backgroundColor: '#0d6efd'
+        }]
+      },
+      options: {
+        indexAxis: 'y'
+      }
+    });
+  </script>
+</body>
+</html>

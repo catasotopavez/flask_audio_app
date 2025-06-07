@@ -127,5 +127,59 @@ def historial():
     rows = cursor.fetchall()
     return render_template("historial.html", registros=rows)
 
+def calcular_nps(respuestas):
+    total = len(respuestas)
+    if total == 0:
+        return 0
+    promotores = sum(1 for r in respuestas if r >= 9)
+    detractores = sum(1 for r in respuestas if r <= 6)
+    nps = ((promotores - detractores) / total) * 100
+    return round(nps, 2)
+
+def calcular_csat(respuestas, umbral=8):
+    total = len(respuestas)
+    if total == 0:
+        return 0
+    satisfechos = sum(1 for r in respuestas if r >= umbral)
+    csat = (satisfechos / total) * 100
+    return round(csat, 2)
+
+@app.route("/dashboard")
+def dashboard():
+    cursor.execute("SELECT puntaje_recomendacion, nivel_satisfaccion, clasificacion_experiencia, problemas_mencionados, fecha FROM analisis")
+    rows = cursor.fetchall()
+
+    recomendaciones = [r[0] for r in rows if r[0] is not None]
+    satisfacciones = [r[1] for r in rows if r[1] is not None]
+
+    clasificaciones = {"Positiva": 0, "Neutra": 0, "Negativa": 0}
+    problemas_count = {}
+
+    for _, _, clasificacion, problemas_json, _ in rows:
+        if clasificacion:
+            clasificaciones[clasificacion] += 1
+        try:
+            problemas = json.loads(problemas_json)
+            for problema in problemas:
+                problemas_count[problema] = problemas_count.get(problema, 0) + 1
+        except:
+            continue
+
+    promedio_recomendacion = round(sum(recomendaciones) / len(recomendaciones), 2) if recomendaciones else 0
+    promedio_satisfaccion = round(sum(satisfacciones) / len(satisfacciones), 2) if satisfacciones else 0
+
+    nps = calcular_nps(recomendaciones)
+    csat = calcular_csat(satisfacciones)
+
+    return render_template("dashboard.html",
+                           total=len(rows),
+                           promedio_recomendacion=promedio_recomendacion,
+                           promedio_satisfaccion=promedio_satisfaccion,
+                           clasificaciones=clasificaciones,
+                           problemas=problemas_count,
+                           nps=nps,
+                           csat=csat)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001, debug=True)
