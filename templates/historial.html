@@ -3,46 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Historial de Análisis</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            padding: 8px;
-            border: 1px solid #aaa;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Historial de Audios Analizados</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Archivo</th>
-                <th>Recomendación</th>
-                <th>Satisfacción</th>
-                <th>Clasificación</th>
-                <th>Problemas Mencionados</th>
-                <th>Fecha</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for archivo, recomendacion, satisfaccion, clasificacion, problemas, fecha in registros %}
-            <tr>
-                <td>{{ archivo }}</td>
-                <td>{{ recomendacion }}</td>
-                <td>{{ satisfaccion }}</td>
-                <td>{{ clasificacion }}</td>
-                <td>{{ problemas }}</td>
-                <td>{{ fecha }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<body class="bg-light">
+    <div class="container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3">Historial de Audios Analizados</h1>
+            <a href="/" class="btn btn-primary">← Volver</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Archivo</th>
+                        <th>Recomendación</th>
+                        <th>Satisfacción</th>
+                        <th>Clasificación</th>
+                        <th>Problemas Mencionados</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for archivo, recomendacion, satisfaccion, clasificacion, problemas, fecha in registros %}
+                    <tr>
+                        <td>{{ archivo }}</td>
+                        <td>{{ recomendacion }}</td>
+                        <td>{{ satisfaccion }}</td>
+                        <td>{{ clasificacion }}</td>
+                        <td>{{ problemas }}</td>
+                        <td>{{ fecha }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>
