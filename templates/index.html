@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Analizador de Audios</title>
+</head>
+<body>
+  <h1>Subir audio para análisis</h1>
+  <form method="post" enctype="multipart/form-data">
+    <input type="file" name="audio" accept=".mp3" required>
+    <button type="submit">Subir y analizar</button>
+  </form>
+
+  {% if transcript %}
+    <hr>
+    <h2>Transcripción:</h2>
+    <pre>{{ transcript }}</pre>
+
+    <h2>Evaluación:</h2>
+    <pre>{{ analysis | tojson(indent=2) }}</pre>
+  {% endif %}
+</body>
+</html>

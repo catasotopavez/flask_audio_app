@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Análisis</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #aaa;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Historial de Audios Analizados</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Archivo</th>
+                <th>Recomendación</th>
+                <th>Satisfacción</th>
+                <th>Clasificación</th>
+                <th>Problemas Mencionados</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for archivo, recomendacion, satisfaccion, clasificacion, problemas, fecha in registros %}
+            <tr>
+                <td>{{ archivo }}</td>
+                <td>{{ recomendacion }}</td>
+                <td>{{ satisfaccion }}</td>
+                <td>{{ clasificacion }}</td>
+                <td>{{ problemas }}</td>
+                <td>{{ fecha }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
